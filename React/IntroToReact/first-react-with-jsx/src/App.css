@@ -1,0 +1,10 @@
+h1, h2, .todo{
+  margin-left: 40px;
+}
+h1 {
+  font-size: 37px;
+}
+.todo{
+list-style-type: none;
+padding-left:10px;
+}
