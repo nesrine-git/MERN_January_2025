@@ -1,0 +1,41 @@
+
+.app {
+    width: 850px;
+    height: 500px;
+    background-color: #dddddd;
+    margin: 0% auto;
+    padding: 20px; 
+}
+.header {
+    height: 120px;
+    background-color: #6aa84f;
+}
+.navigation {
+    height: 290px;
+    width: 200px;
+    background-color: #6fa8dc;
+}
+.main {
+    height: 360px;
+    width: 700px;
+    background-color: #e06666; 
+    padding:0 20px ;
+
+}
+
+.sub-content {
+    height: 200px;
+    width: 200px;
+    background-color: #ffd966;
+}
+.advertisement {
+    height: 100px;
+    width: 640px;
+    background-color: #b4a7d6;
+} 
+.row {
+    display : flex;
+    padding: 20px 0;
+    gap: 20px;
+}
+
