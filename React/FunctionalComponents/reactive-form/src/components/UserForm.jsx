@@ -163,7 +163,7 @@ const UserForm = () => {
                     <h2 className='serif-font fw-bold'>Users</h2>
                     {
                         users.map((user, index) => (
-                        <div>
+                        <div key={index}>
                             <p className='mb-0 serif-font'>{user.firstName} {user.lastName} ({user.emailAddress})</p>   
                         </div>
                         ))
