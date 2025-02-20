@@ -1,0 +1,25 @@
+/* CSS Reset */
+* {
+ margin: 0;
+ padding: 0;
+}
+
+/* Custom Background */
+.custom-bg {
+  background-color: #D3D3D3;
+}
+
+/* Applies the default serif font (like Times New Roman) to the label */
+.serif-font {
+  font-family: "Times New Roman", Times, serif;;
+}
+/* */
+.height{
+  height : 45px;
+}
+
+/* */
+input.form-control:focus{
+  box-shadow: none;
+}
+
