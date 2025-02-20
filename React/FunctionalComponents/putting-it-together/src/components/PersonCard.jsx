@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import '../App.css'
+import '../App.css';
+
 
 const PersonCard = (props) => {
     
@@ -13,13 +14,14 @@ const PersonCard = (props) => {
 
     
     return (
-        <div className='container'>
-            <div>
-                <h1>{firstName}, {lastName} </h1>
-                <p> Age: {currentAge} </p>
-                <p>Hair Color: {hairColor}</p>  
+        <div className="d-flex flex-column align-items-center gap-4 p-4">
+            <div className="d-flex flex-column">
+                {/* 'm-0' removes all margins, 'fw-normal' sets the font weight to normal */}
+                <h1 className='m-0 fw-normal'>{firstName}, {lastName} </h1>
+                <p className='m-0'> Age: {currentAge} </p>
+                <p className='m-0'>Hair Color: {hairColor}</p>  
             </div>  
-            <button onClick = {handleClick}>
+            <button className="btn btn-light custom-btn px-4" onClick = {handleClick}>
                 Birthday Button {lastName} {firstName} 
             </button>          
         </div>
