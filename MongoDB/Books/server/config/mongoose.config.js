@@ -1,22 +1,15 @@
-import { connect } from "mongoose";
-
-
-
-const Mong_URI = "mongodb+srv://root:root@cluster-mern.nw5hb.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-MERN"
-
-const dbName = "Book"
+import { connect } from 'mongoose';
 
 async function dbConnect() {
     try {
-        await connect(Mong_URI, {
-            dbName
-        })
-        console.log(`📡📡📡You successfully connected to ${dbName} DB!`)
+        await connect(process.env.MONGODB_URI, {
+            dbName: process.env.DB_NAME,
+        });
+        console.log(`Pinged your deployment. You successfully connected to MongoDB! ${process.env.DB_NAME}`);
     } catch (error) {
-        console.log(error)
-        throw error
+        console.log(error);
+        throw error;
     }
 }
+export default dbConnect;
 
-
-export default dbConnect
