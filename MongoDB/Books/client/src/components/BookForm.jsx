@@ -61,7 +61,6 @@ const BookForm = () => {
 
           axios.post('http://localhost:3000/api/books/create',formData)
           .then(res => {
-              alert(res.data.message); 
               console.log(res);
               console.log(res.data);
               nav("/");

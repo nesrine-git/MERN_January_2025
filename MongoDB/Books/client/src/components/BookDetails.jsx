@@ -29,12 +29,11 @@ const BookDetails = () => {
 
   if (!book) return <p>Loading book details...</p>;
 
-const deleteBook = () => { 
+const deleteBook = (id) => { 
      axios.delete(`http://localhost:3000/api/books/${id}/delete`)
     .then((res) => {
         console.log(res.data);
             if (res.data.success) {
-                alert(res.data.message);  // Show success message
                 nav("/");  // Navigate to the main catalog page
                 setTitle("Book Catalog");  // Update the page title
             } else {
@@ -61,7 +60,7 @@ return (
                 <h6 className='text-success'> {book.isAvailable ? "Available for borrowing" : "Not Available"}</h6>
             </div>  
             <div>
-                <button className='btn btn-danger text-white rounded-1' onClick={deleteBook}>Borrow</button>
+                <button className='btn btn-danger text-white rounded-1' onClick={() => { deleteBook(book._id) }}>Borrow</button>
             </div>  
 
         </div>
