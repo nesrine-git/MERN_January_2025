@@ -5,31 +5,31 @@ import useUpdateTitle from '../hooks/useUpdateTitle';
 import TitleContext from '../context/TitleContext';
 
 const BookDetails = () => {
-  const [book, setBook] = useState({});
-  const { setTitle } = useContext(TitleContext);
-  const { id } = useParams();
-  const nav = useNavigate()
+    const [book, setBook] = useState({});
+    const { setTitle } = useContext(TitleContext);
+    const { id } = useParams();
+    const nav = useNavigate()
 
-  useEffect(() => {
-    axios.get(`http://localhost:3000/api/books/${id}`)
-        .then((res) => {
-            if (res.data.success) {
-                console.log(res.data.data);
-                setBook(res.data.data);    
-            } else {
-                console.error(res.data.message);
-            }
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    useEffect(() => {
+        axios.get(`http://localhost:3000/api/books/${id}`)
+            .then((res) => {
+                if (res.data.success) {
+                    console.log(res.data.data);
+                    setBook(res.data.data);    
+                } else {
+                    console.error(res.data.message);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
 }, [id])
 
   useUpdateTitle(book.title); // Update the title dynamically
 
-  if (!book) return <p>Loading book details...</p>;
+    if (!book) return <p>Loading book details...</p>;
 
-const deleteBook = (id) => { 
+const deleteBook = () => { 
      axios.delete(`http://localhost:3000/api/books/${id}/delete`)
     .then((res) => {
         console.log(res.data);
@@ -60,7 +60,7 @@ return (
                 <h6 className='text-success'> {book.isAvailable ? "Available for borrowing" : "Not Available"}</h6>
             </div>  
             <div>
-                <button className='btn btn-danger text-white rounded-1' onClick={() => { deleteBook(book._id) }}>Borrow</button>
+                <button className='btn btn-danger text-white rounded-1' onClick={deleteBook}>Borrow</button>
             </div>  
 
         </div>

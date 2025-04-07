@@ -6,7 +6,7 @@ import { Routes, Route } from 'react-router-dom'
 import TitleContext from './context/TitleContext'
 import { useState, useEffect } from 'react'
 import Main from './views/Main'
-
+import BookUpdate from './components/BookUpdate'
 
 function App() {
     // Check if there's a saved title in localStorage, else use the default
@@ -26,10 +26,11 @@ function App() {
           <Routes>
             <Route path="/" element={<BooksDisplay />} />   
             <Route path="/create" element={<BookForm />} />
-            <Route path="/books/:id/details" element={<BookDetails />} /> 
+            <Route path="/books/:id/details" element={<BookDetails />} />
+            <Route path="/books/:id/update" element={<BookUpdate />} /> 
           </Routes>
       </Main>
-   
+  
         </TitleContext.Provider>  
     </div>
   )

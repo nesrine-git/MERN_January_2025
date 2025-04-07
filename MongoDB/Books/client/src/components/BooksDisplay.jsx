@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useUpdateTitle from "../hooks/useUpdateTitle";
 
 const BooksDisplay = () => {
@@ -33,7 +33,7 @@ const BooksDisplay = () => {
         <table className="table table-bordered table-hover table-striped text-center align-middle" style={{ borderCollapse:"separate", borderSpacing: "2px"}}>
           <thead className="thead-dark table-active">
             <tr>
-              <th style={{border: "1px solid gray"}}>Title</th>
+              <th style={{border: "1px solid gray", width:"30%"}}>Title</th>
               <th style={{border: "1px solid gray"}}>Author</th>
               <th style={{border: "1px solid gray"}}>Page Count</th>
               <th style={{border: "1px solid gray"}}>Available</th>
@@ -47,7 +47,7 @@ const BooksDisplay = () => {
                 <td style={{border: "1px solid gray"}}>{book.author}</td>
                 <td style={{border: "1px solid gray"}}>{book.pages}</td>
                 <td style={{border: "1px solid gray"}}>
-                  {book.isAvailable ? "Yes" : "No"}
+                  {book.isAvailable ? "Yes" : "No"} | <Link to={`/books/${book._id}/update`}> Edit </Link>
                 </td>
                 <td style={{border: "1px solid gray"}}>
                   <button className="btn btn-success" onClick={() => nav(`/books/${book._id}/details`)}>

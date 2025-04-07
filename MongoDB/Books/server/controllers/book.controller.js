@@ -12,12 +12,11 @@ const bookController = {
                 data: newBook,
             });
         } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                success: false,
-                message: "❌ Task creation failed ❌",
-                error: error.message
-            });
+                return res.status(400).json({
+                    success: false,
+                    message: "❌ Book validation failed ❌",
+                    errors: error.errors 
+                });
         }
     },
 
@@ -36,7 +35,7 @@ const bookController = {
             res.status(400).json({
                 success: false,
                 message: "❌ All Books not found ❌",
-                error: error.message
+                error: error.errors
             }); 
         }
     },
@@ -55,7 +54,7 @@ const bookController = {
             res.status(400).json({
                 success: false,
                 message: "❌ Book not found ❌",
-                error: error.message
+                error: error.errors
             });
         }
     },
@@ -85,7 +84,7 @@ const bookController = {
             res.status(400).json({
                 success: false,
                 message: "❌ Book update failed ❌",
-                error: error.message
+                error: error.errors
             });
         }
     },
@@ -109,7 +108,7 @@ const bookController = {
             res.status(400).json({
                 success: false,
                 message: "❌ Book deletion failed ❌",
-                error: error.message
+                error: error.errors
             });
     }
 }
