@@ -13,7 +13,6 @@ const BooksDisplay = () => {
     axios.get("http://localhost:3000/api/books")
       .then((res) => {
         if (res.data.success) {
-          console.log(res.data.message); // Custom message
           setAllBooks(res.data.data);
       } else {
           console.error(res.data.message);
@@ -22,7 +21,7 @@ const BooksDisplay = () => {
 
       .catch((err) => console.error("Error fetching books:", err));
 
-  }, []);
+  }, [allBooks]);
 
   return (
     <div className="p-4">

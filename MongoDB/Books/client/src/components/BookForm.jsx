@@ -6,32 +6,84 @@ import useUpdateTitle from '../hooks/useUpdateTitle';
 
 const BookForm = () => {
   const [formData, setFormData] = useState({
-      title:"",
-      author:"",
-      pages:1, 
-      isAvailable: false
+    title:"",
+    author:"",
+    pages:"",
+    isAvailable: false
     })
   
-    // State to store validation errors
+    // Server errors
     const [errors, setErrors] = useState({});
+    // Client errors
+    const [formErrors, setFormErrors] = useState({
+      title: "Please provide a title for your book!",
+      author: "Author name is required!",
+      pages: "Number of pages is required!",
+    })
+    // hide client-errors on Load
+    const [enteredForm, setEnteredForm] = useState(false)
 
     const nav = useNavigate();
 
-    
     useUpdateTitle('Add a Book'); // Set the title for this page
+
+    const validateForm = () => {
+      return Object.values(formErrors).every(value => value === '');
+    }
 
     // Handle changes in the input fields
     const handleChange = (e) => {
-  
       const { name, type, value, checked } = e.target;
       setFormData((prevState) => ({
         ...prevState,
         [name]: type === "checkbox" ? checked : value
       }));
-      setErrors((prev) => ({ ...prev, [name]: null }));  //old errors are cleared as the user types 
+
+      // Initialize error message variable
+      let errorMsg = '';
+      const val = value.trim();
+
+      // Validate the specific field based on its name
+      if (name === 'title') {
+        if (val === '') {
+          errorMsg = 'Please provide a title for your book!';
+        } else if (val.length < 2) {
+          errorMsg = 'Title must be at least 2 characters long!';
+        } else if (val.length > 255) {
+          errorMsg = 'Title must be less than 255 characters long';
+        }
+      }
+
+      if (name === 'author') {
+        if (val === '') {
+          errorMsg = 'Author name is required!';
+        } else if (val.length < 5) {
+          errorMsg = 'Author name must be at least 5 characters long!';
+        } else if (val.length > 255) {
+          errorMsg = 'Author name must be less than 255 characters long';
+        }
+      }
+
+      if (name === 'pages') {
+        if (val === '') {
+          errorMsg = 'Number of pages is required!';
+        } else if (Number(val) < 1) {
+          errorMsg = 'A book must have at least one page!';
+        }
+      }
+      // Update the formErrors state with the error for the current field
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: errorMsg
+      }));
+
+      //old server-errors are cleared as the user types
+      setErrors((prev) => ({ ...prev, [name]: null }));  
     };
     
-
+    
+  
+    
     // Handle form submission
     const handleSubmit = (e) => {
       e.preventDefault()
@@ -43,7 +95,8 @@ const BookForm = () => {
               nav("/");
             })
             .catch((err) => {
-              setErrors(err.response.data.errors)
+              //console.log(err.response.data.validations)
+              setErrors(err.response.data)
             })
     }
 
@@ -51,27 +104,37 @@ const BookForm = () => {
     <div>
         <form onSubmit={handleSubmit}>
         <div className='d-flex flex-column justify-content-center align-items-center'>
-          <div className='d-flex flex-column align-items-start p-4 gap-3'>
+        {errors && <p className='text-danger'>{errors.name} {errors.statusCode}</p>}
+          <div className='d-flex flex-column align-items-start gap-1'>
             {/* Title Section*/}
             <div className='d-flex flex-column justify-content-start gap-1'>
                 <label className="fw-bold">Title</label>
-                <input type="Title" className="border border-2 border-secondary-light shadow-sm " name="title" value={formData.title} onChange={handleChange}/>
-            </div>    
-            {errors.title ? <div style={{ color: "red" }}>{errors.title.message}</div> : " " }
-
+                <input type="Title" className="border border-2 border-secondary-light shadow-sm " name="title" value={formData.title} onChange={handleChange} onClick={() => setEnteredForm(true)}/>
+            </div>
+            {/* Front-end Error*/}
+            {formErrors.title && <div className={enteredForm? "errorMessage" : "hidden"}>Front-end:{formErrors.title}</div>}
+            {/* Back-end Error*/}  
+            {errors.validations?.title && <div>{errors.validations.title}</div>}
+            
             {/* Author Name Section*/}
             <div className='d-flex flex-column justify-content-start gap-1'>
                 <label className="fw-bold">Author Name</label>
-                <input type="text" className="border border-2 border-secondary-light shadow-sm " name="author" value={formData.author}  onChange={handleChange}/>
+                <input type="text" className="border border-2 border-secondary-light shadow-sm " name="author" value={formData.author}  onChange={handleChange} onClick={() => setEnteredForm(true)}/>
             </div>
-            {errors.author ? <div style={{ color: "red" }}>{errors.author.message}</div> : " " }
-            
+            {/* Front-end Error*/}
+            {formErrors.author && <div className={enteredForm? "errorMessage" : "hidden"}>Front-end:{formErrors.author}</div>}
+            {/* Back-end Error*/}
+            {errors.validations?.author && <div>{errors.validations.author}</div>}
+
             {/* Page Count Section*/}
             <div className='d-flex flex-column justify-content-start gap-1'>
                 <label className="fw-bold">Page Count</label>
-                <input  className="border border-2 border-secondary-light shadow-sm w-50" type="number" min="0" step="1" name="pages" value={formData.pages}  onChange={handleChange}/>
+                <input  className="border border-2 border-secondary-light shadow-sm w-50" type="number" name="pages" value={formData.pages}  onChange={handleChange} onClick={() => setEnteredForm(true)}/>
             </div>
-            {errors.pages? <div style={{ color: "red" }}>{errors.pages.message}</div> : " " }
+            {/* Front-end Error*/}
+            {formErrors.pages && <div className={enteredForm? "errorMessage" : "hidden"}>Front-end:{formErrors.pages}</div>}
+            {/* Back-end Error*/}
+            {errors.validations?.pages && <div>{errors.validations.pages}</div>}
 
             {/* Is Available Section*/}
             <div className='d-flex gap-2'>
@@ -81,7 +144,7 @@ const BookForm = () => {
 
             {/* Button Section*/}
             <div>
-                <button className='btn btn-info custom-shadow text-white rounded-5 mt-3' style={{width:'145px'}}>Add Book!</button> 
+                <button className='btn btn-info custom-shadow text-white rounded-5 mt-3' style={{width:'145px'}} type="submit" disabled={!validateForm()}>Add Book!</button> 
             </div>
           </div> 
           </div>

@@ -1,117 +1,68 @@
-import Book from "../models/book.model.js";
+import Book from '../models/book.model.js';
+import response from '../utils/response.js';
 
 const bookController = {
-    //? CRUD Features 
-    //! 1. Create a new book functionality
-    createBook: async (req, res)=> {
-        try {
-            const newBook = await Book.create(req.body);
-            res.status(201).json({
-                success: true,
-                message: "Book created successfully!",
-                data: newBook,
-            });
-        } catch (error) {
-                return res.status(400).json({
-                    success: false,
-                    message: "❌ Book validation failed ❌",
-                    errors: error.errors 
-                });
-        }
-    },
-
-    //! 2. Get all books functionality
-    getAllBooks: async (req, res)=> {
-        try {
-            const allBooks = await Book.find().sort({createdAt: -1}); 
-            res.status(200).json({
-                success: true,
-                message: "✅ All books retrieved successfully ✅",
-                data: allBooks,
-                
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                success: false,
-                message: "❌ All Books not found ❌",
-                error: error.errors
-            }); 
-        }
-    },
-    //! 3. Get One  book functionality
-    getOneBook: async (req, res)=> {
-        try {
-            const foundBook = await Book.findById(req.params.id);
-            res.status(200).json({
-                success: true,
-                message: "✅ Book found successfully ✅",
-                data: foundBook
-            });
-
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                success: false,
-                message: "❌ Book not found ❌",
-                error: error.errors
-            });
-        }
-    },
-    //! 4. Update book functionality
-    updateBook: async (req, res)=> {
-        const options = {
-            new: true,
-            runValidators: true,
-        };
-        try {
-            const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, options);
-            if (!updatedBook) {
-                return res.status(404).json({
-                    success: false,
-                    message: "❌ Book not found ❌"
-                });
-            }
-
-            res.status(200).json({
-                success: true,
-                message: "✅ Book updated successfully ✅",
-                data: updatedBook
-            });
-
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                success: false,
-                message: "❌ Book update failed ❌",
-                error: error.errors
-            });
-        }
-    },
-    //! 5. Delete book functionality
-    deleteBook: async (req, res)=> {
-        try {
-            const deletedBook = await Book.findByIdAndDelete(req.params.id);
-            if (!deletedBook) {
-                return res.status(404).json({
-                    success: false,
-                    message: "❌ Book not found ❌"
-                });
-            }
-            res.status(200).json({
-                success: true,
-                message: "✅ Book deleted successfully ✅",
-                data: deletedBook
-            });
-        } catch (error) {
-            console.log(error);
-            res.status(400).json({
-                success: false,
-                message: "❌ Book deletion failed ❌",
-                error: error.errors
-            });
+  // Create a new book
+  createBook: async (req, res, next) => {
+    try {
+      const newBook = await Book.create(req.body);
+      
+      response(res, 201, true, '✅ Book created successfully', newBook);
+    } catch (error) {
+      console.error(error)
+      next(error);
     }
-}
-}
+  },
+
+  // Get all books
+  getAllBooks: async (req, res, next) => {
+    try {
+      const allBooks = await Book.find().sort({ createdAt: -1 });
+      response(res, 200, true, '✅ All books retrieved successfully', allBooks);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Get one book by ID
+  getOneBook: async (req, res, next) => {
+    try {
+      const foundBook = await Book.findById(req.params.id);
+      if (!foundBook) {
+        return response(res, 404, false, '❌ Book not found');
+      }
+      response(res, 200, true, '✅ Book found successfully', foundBook);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Update a book
+  updateBook: async (req, res, next) => {
+    const options = { new: true, runValidators: true };
+    try {
+      const updatedBook = await Book.findByIdAndUpdate(req.params.id, req.body, options);
+      if (!updatedBook) {
+        return response(res, 404, false, '❌ Book not found');
+      }
+      response(res, 200, true, '✅ Book updated successfully', updatedBook);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  // Delete a book
+  deleteBook: async (req, res, next) => {
+    try {
+      const deletedBook = await Book.findByIdAndDelete(req.params.id);
+      if (!deletedBook) {
+        return response(res, 404, false, '❌ Book not found');
+      }
+      response(res, 200, true, '✅ Book deleted successfully', deletedBook);
+    } catch (error) {
+      next(error);
+    }
+  }
+};
 
 export default bookController;

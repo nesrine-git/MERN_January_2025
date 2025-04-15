@@ -30,7 +30,7 @@ const BookDetails = () => {
     if (!book) return <p>Loading book details...</p>;
 
 const deleteBook = () => { 
-     axios.delete(`http://localhost:3000/api/books/${id}/delete`)
+    axios.delete(`http://localhost:3000/api/books/${id}/delete`)
     .then((res) => {
         console.log(res.data);
             if (res.data.success) {
