@@ -13,6 +13,7 @@ const router = Router();
 //! 2. Get all notes route
       router.route("/notes")
             .get(noteController.getAllNote)
+            //.get(noteController.getAllNoteByCategory)
 
 //! 3. Get One note route
       router.route("/notes/:id")

@@ -14,10 +14,19 @@ const noteController = {
     }
   },
 
-  // Get all notes
+  // Get all notes with sort method
   getAllNote: async (req, res, next) => {
     try {
       const allNote = await Note.find().sort({ createdAt: -1 });
+      response(res, 200, true, '✅ All note retrieved successfully', allNote);
+    } catch (error) {
+      next(error);
+    }
+  },
+  // Get all notes with category
+  getAllNoteByCategory: async (req, res, next) => {
+    try {
+      const allNote = await Note.find().populate('category');
       response(res, 200, true, '✅ All note retrieved successfully', allNote);
     } catch (error) {
       next(error);

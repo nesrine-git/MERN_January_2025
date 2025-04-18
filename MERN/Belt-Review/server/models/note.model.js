@@ -1,4 +1,4 @@
-import {model, Schema} from 'mongoose';
+import mongoose, {model, Schema} from 'mongoose';
 
 //* Define the Schema for a Note
 const NoteSchema = new Schema(
@@ -23,7 +23,11 @@ const NoteSchema = new Schema(
         important: { 
             type: Boolean,
             default: false
-        }
+        },
+        category: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Category'
+          }
     },
     {
         timestamps: true, //* Automatically add createdAt and updatedAt fields
